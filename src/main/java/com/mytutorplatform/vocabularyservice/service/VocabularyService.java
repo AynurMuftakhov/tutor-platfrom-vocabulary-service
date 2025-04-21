@@ -11,6 +11,8 @@ import com.mytutorplatform.vocabularyservice.repository.VocabularyWordRepository
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class VocabularyService {
-
     private final VocabularyWordRepository wordRepo;
     private final VocabularyMapper mapper;
     private final OpenAiChatModel chatModel;
@@ -46,7 +47,6 @@ public class VocabularyService {
         String audioUrl = null;
 
         VocabularyWord word = VocabularyWord.builder()
-                .id(UUID.randomUUID())
                 .text(text)
                 .translation(payload.path("translation_ru").asText())
                 .partOfSpeech(payload.path("part_of_speech").asText(null))
@@ -55,10 +55,12 @@ public class VocabularyService {
                         payload.path("synonyms"), String[].class))
                 .phonetic(payload.path("phonetic").asText(null))
                 .audioUrl(audioUrl)
-                .rawJson(payload.toString())
+                .rawJson(payload)
                 .createdByTeacherId(request.getTeacherId())
                 .editedAt(null)
                 .build();
+
+        log.debug("Word generated with id {}", word);
 
         return mapper.toResponse(wordRepo.save(word));
     }

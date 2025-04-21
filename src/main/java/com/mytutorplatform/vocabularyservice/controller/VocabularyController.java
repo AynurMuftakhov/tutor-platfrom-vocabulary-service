@@ -36,7 +36,7 @@ public class VocabularyController {
     @PostMapping("/create")
     public ResponseEntity<VocabularyWordResponse> create(@RequestBody CreateWordRequest request) {
         VocabularyWordResponse word = service.createWord(request);
-
+        
         URI location = URI.create(API_V_1 + VOCABULARY_WORDS_PATH + "/" + word.getId());
 
         return ResponseEntity.created(location).body(word);

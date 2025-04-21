@@ -11,4 +11,8 @@ public class VocabularyWordResponse {
     private String translation;
     private String partOfSpeech;
     private UUID createdByTeacherId;
+    private String definitionEn;
+    private String[] synonymsEn;
+    private String phonetic;
+    private String audioUrl;
 }
