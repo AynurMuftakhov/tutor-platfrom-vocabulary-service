@@ -1,5 +1,6 @@
 package com.mytutorplatform.vocabularyservice.controller;
 
+import com.mytutorplatform.vocabularyservice.model.dto.CreateWordRequest;
 import com.mytutorplatform.vocabularyservice.model.dto.VocabularyWordRequest;
 import com.mytutorplatform.vocabularyservice.model.dto.VocabularyWordResponse;
 import com.mytutorplatform.vocabularyservice.service.VocabularyService;
@@ -24,7 +25,16 @@ public class VocabularyController {
     private final VocabularyService service;
 
     @PostMapping
-    public ResponseEntity<VocabularyWordResponse> create(@RequestBody @Valid VocabularyWordRequest request) {
+    public ResponseEntity<VocabularyWordResponse> save(@RequestBody @Valid VocabularyWordRequest request) {
+        VocabularyWordResponse word = service.saveWord(request);
+
+        URI location = URI.create(API_V_1 + VOCABULARY_WORDS_PATH + "/" + word.getId());
+
+        return ResponseEntity.created(location).body(word);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<VocabularyWordResponse> create(@RequestBody CreateWordRequest request) {
         VocabularyWordResponse word = service.createWord(request);
 
         URI location = URI.create(API_V_1 + VOCABULARY_WORDS_PATH + "/" + word.getId());

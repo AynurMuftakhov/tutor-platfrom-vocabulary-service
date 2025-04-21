@@ -17,3 +17,13 @@ spring:
                 show-sql: true
                 format-sql: true
         database-platform: org.hibernate.dialect.PostgreSQLDialect
+    ai:
+        openai:
+            chat:
+                options:
+                    model: gpt-4o-mini
+
+services:
+    free-dictionary: https://api.dictionaryapi.dev/api/v2/entries/en
+    datamuse: https://api.datamuse.com
+    piper: http://localhost:59125

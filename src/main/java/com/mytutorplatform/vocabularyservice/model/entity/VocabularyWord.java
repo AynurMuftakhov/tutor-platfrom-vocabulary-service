@@ -1,14 +1,21 @@
 package com.mytutorplatform.vocabularyservice.model.entity;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import jakarta.persistence.*;
+
 @Entity
-@Table(name = "vocabulary_word")
+@Table(name = "vocabulary_word",
+        uniqueConstraints = @UniqueConstraint(columnNames = "text"))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,6 +35,31 @@ public class VocabularyWord {
 
     private String partOfSpeech;
 
+    @Column(name = "definition_en", columnDefinition="TEXT")
+    private String definitionEn;
+
+    @Column(name = "synonyms_en", columnDefinition="TEXT[]")
+    private String[] synonymsEn;
+
+    private String phonetic;
+
+    @Column(name = "audio_url")
+    private String audioUrl;
+
+    @Column(name = "raw_json", columnDefinition="JSONB")
+    private String rawJson;
+
     @Column(name = "created_by")
     private UUID createdByTeacherId;
+
+    @Column(name = "edited_at")
+    private OffsetDateTime editedAt;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private OffsetDateTime createdAt;
+
+    @PrePersist
+    void onCreate() {
+        createdAt = OffsetDateTime.now();
+    }
 }
