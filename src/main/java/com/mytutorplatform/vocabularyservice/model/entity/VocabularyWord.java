@@ -46,6 +46,12 @@ public class VocabularyWord {
 
     private String phonetic;
 
+    private String difficulty;
+
+    private String popularity;
+
+    private String exampleSentence;
+
     @Column(name = "audio_url")
     private String audioUrl;
 

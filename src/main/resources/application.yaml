@@ -19,6 +19,7 @@ spring:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
     ai:
         openai:
+            api-key: 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
             chat:
                 options:
                     model: gpt-4o-mini
