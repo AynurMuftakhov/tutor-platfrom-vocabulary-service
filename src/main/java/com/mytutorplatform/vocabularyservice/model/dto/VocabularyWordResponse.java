@@ -15,6 +15,7 @@ public class VocabularyWordResponse {
     private String[] synonymsEn;
     private String phonetic;
     private String audioUrl;
+    private String exampleSentenceAudioUrl;
     private String difficulty;
     private String popularity;
     private String exampleSentence;

@@ -5,8 +5,8 @@ spring:
         name: vocabulary-service
     datasource:
         url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/vocabulary_service}
-        username: ${SPRING_DATASOURCE_USERNAME:sysadm}
-        password: ${SPRING_DATASOURCE_PASSWORD:admin}
+        username: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}
         driver-class-name: org.postgresql.Driver
     jpa:
         hibernate:
@@ -19,12 +19,13 @@ spring:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
     ai:
         openai:
-            api-key: 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
+            api-key: ${OPENAI_API_KEY}
             chat:
                 options:
                     model: gpt-4o-mini
+elevenlabs:
+    api-key: ${ELEVENLABS_API_KEY}
+    voice-id: ${ELEVENLABS_VOICE_ID}
 
-services:
-    free-dictionary: https://api.dictionaryapi.dev/api/v2/entries/en
-    datamuse: https://api.datamuse.com
-    piper: http://localhost:59125
+vocabulary-service:
+    base-url: ${BASE_URL}

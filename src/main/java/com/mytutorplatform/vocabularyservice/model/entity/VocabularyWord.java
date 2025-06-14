@@ -1,6 +1,7 @@
 package com.mytutorplatform.vocabularyservice.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -52,6 +55,8 @@ public class VocabularyWord {
 
     private String exampleSentence;
 
+    private String exampleSentenceAudioUrl;
+
     @Column(name = "audio_url")
     private String audioUrl;
 
@@ -67,6 +72,10 @@ public class VocabularyWord {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
+
+    @OneToMany(mappedBy = "vocabularyWord", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<AssignedWord> assignedWords = new ArrayList<>();
 
     @PrePersist
     void onCreate() {

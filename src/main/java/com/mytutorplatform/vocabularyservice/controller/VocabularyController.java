@@ -1,5 +1,6 @@
 package com.mytutorplatform.vocabularyservice.controller;
 
+import com.mytutorplatform.vocabularyservice.model.AudioPart;
 import com.mytutorplatform.vocabularyservice.model.dto.CreateWordRequest;
 import com.mytutorplatform.vocabularyservice.model.dto.VocabularyWordRequest;
 import com.mytutorplatform.vocabularyservice.model.dto.VocabularyWordResponse;
@@ -56,6 +57,12 @@ public class VocabularyController {
     public ResponseEntity<VocabularyWordResponse> update(@PathVariable UUID id,
                                          @RequestBody VocabularyWordRequest request) {
         return ResponseEntity.ok(service.updateWord(id, request));
+    }
+
+    @PatchMapping("/{id}/audio/regenerate")
+    public ResponseEntity<VocabularyWordResponse> regenerateAudio(@PathVariable UUID id,
+                                                                  @RequestParam(required = false) AudioPart part) {
+        return ResponseEntity.ok(service.regenerateAudio(id, part));
     }
 
     @DeleteMapping("/{id}")

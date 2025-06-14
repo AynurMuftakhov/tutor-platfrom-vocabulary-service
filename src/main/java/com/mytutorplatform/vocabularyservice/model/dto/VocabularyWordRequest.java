@@ -7,13 +7,12 @@ import java.util.UUID;
 
 @Data
 public class VocabularyWordRequest {
-    @NotBlank
     private String text;
-
-    @NotBlank
     private String translation;
-
     private String partOfSpeech;
-
-    private UUID createdByTeacherId;
+    private String definitionEn;
+    private String[] synonymsEn;
+    private String difficulty;
+    private String popularity;
+    private String exampleSentence;
 }

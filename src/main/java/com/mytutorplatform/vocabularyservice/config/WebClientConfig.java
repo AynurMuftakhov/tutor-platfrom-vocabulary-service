@@ -1,31 +1,15 @@
 package com.mytutorplatform.vocabularyservice.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebClientConfig {
+public class WebClientConfig implements WebMvcConfigurer {
 
-/*    @Bean
-    public WebClient freeDictionaryClient(@Value("${services.free-dictionary}") String baseUrl) {
-        return WebClient.builder()
-                .baseUrl(baseUrl)
-                .build();
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/audio/**")
+                .addResourceLocations("file:public/audio/");
     }
-
-    @Bean
-    public WebClient datamuseClient(@Value("${services.datamuse}") String baseUrl) {
-        return WebClient.builder()
-                .baseUrl(baseUrl)
-                .build();
-    }
-
-    @Bean
-    public WebClient piperClient(@Value("${services.piper}") String baseUrl) {
-        return WebClient.builder()
-                .baseUrl(baseUrl)
-                .build();
-    }*/
 }

@@ -38,7 +38,7 @@ public class LLMService {
               "translationRu": "<Russian translation (1-3 words)>",
               "partOfSpeech": "<noun | verb | adjective | adverb>",
               "phonetic": "<IPA or Arpabet transcription>",
-              "difficulty": "<integer 1–5 where 1=very easy, 5=very hard>",
+              "difficulty": "<integer 1–5 where 1=beginner can learn easily, 5=very hard to learn>",
               "popularity": "<integer 1–5 where 1=rare, 5=very common>",
               "exampleSentence": "<simple CEFR B1-B2 level example sentence>"
             }

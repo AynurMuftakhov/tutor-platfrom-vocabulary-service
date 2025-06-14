@@ -29,7 +29,6 @@ public class AbstractIntegrationTest {
         request.setText(text);
         request.setTranslation(translation);
         request.setPartOfSpeech(partOfSpeech);
-        request.setCreatedByTeacherId(teacherId);
 
         String response = mockMvc.perform(post("/api/v1/vocabulary/words")
                         .contentType(MediaType.APPLICATION_JSON)
