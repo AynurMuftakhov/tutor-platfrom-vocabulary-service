@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 @Service
 public class AudioStorageService {
@@ -21,10 +22,19 @@ public class AudioStorageService {
         Files.createDirectories(Paths.get(AUDIO_DIR));
     }
 
-    public String saveAudioToFile(byte[] audio, String name) throws IOException {
-        String fileName = name.toLowerCase() + ".mp3";
-        Path path = Paths.get(AUDIO_DIR, fileName);
-        Files.write(path, audio);
-        return baseUrl + "/audio/" + fileName;
-    }
+  public String saveAudioToFile(byte[] audio, String baseName) throws IOException {
+    String fileName = baseName.replaceAll("[^a-zA-Z0-9._-]", "_");
+    Path baseDir = Path.of(AUDIO_DIR);
+    Path path = baseDir.resolve(fileName + ".mp3");
+
+    Files.createDirectories(path.getParent());
+    Files.write(
+            path,
+            audio,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.TRUNCATE_EXISTING,
+            StandardOpenOption.WRITE
+    );
+    return baseUrl + "/audio/" + fileName + ".mp3";
+  }
 }

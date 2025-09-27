@@ -44,8 +44,8 @@ public class VocabularyController {
     }
 
     @GetMapping
-    public List<VocabularyWordResponse> getAll() {
-        return service.getAllWords();
+    public List<VocabularyWordResponse> getAll(@RequestParam(required = false) List<UUID> ids) {
+        return service.getAllWords(ids);
     }
 
     @GetMapping("/{id}")
