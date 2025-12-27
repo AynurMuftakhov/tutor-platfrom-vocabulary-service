@@ -3,23 +3,25 @@ package com.mytutorplatform.vocabularyservice;
 import com.mytutorplatform.vocabularyservice.model.dto.VocabularyWordRequest;
 import org.junit.jupiter.api.*;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class VocabularyControllerTest extends AbstractIntegrationTest {
     private final UUID teacherId = UUID.randomUUID();
 
     @Test
     void testCreateWord_thenFindInList() throws Exception {
         UUID wordId = createWord("hello", "привет", "interjection", teacherId);
-
+    
         mockMvc.perform(get("/api/v1/vocabulary/words"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(wordId.toString()))
-                .andExpect(jsonPath("$[0].text").value("hello"));
+                .andExpect(jsonPath("$.content[0].id").value(wordId.toString()))
+                .andExpect(jsonPath("$.content[0].text").value("hello"));
     }
 
     @Test

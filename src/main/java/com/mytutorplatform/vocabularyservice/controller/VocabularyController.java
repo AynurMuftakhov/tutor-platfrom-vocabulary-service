@@ -7,6 +7,9 @@ import com.mytutorplatform.vocabularyservice.model.dto.VocabularyWordResponse;
 import com.mytutorplatform.vocabularyservice.service.VocabularyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +47,11 @@ public class VocabularyController {
     }
 
     @GetMapping
-    public List<VocabularyWordResponse> getAll(@RequestParam(required = false) List<UUID> ids) {
-        return service.getAllWords(ids);
+    public Page<VocabularyWordResponse> getAll(
+            @RequestParam(required = false) List<UUID> ids,
+            @RequestParam(required = false) String text,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return service.getAllWords(ids, text, pageable);
     }
 
     @GetMapping("/{id}")

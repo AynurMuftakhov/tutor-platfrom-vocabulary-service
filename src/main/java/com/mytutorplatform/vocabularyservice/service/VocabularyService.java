@@ -12,8 +12,11 @@ import com.mytutorplatform.vocabularyservice.repository.VocabularyWordRepository
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -83,12 +86,16 @@ public class VocabularyService {
         }
     }
 
-    public List<VocabularyWordResponse> getAllWords(List<UUID> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-          return mapper.toListOfVocabularyWordResponses(wordRepo.findAll());
+    public Page<VocabularyWordResponse> getAllWords(List<UUID> ids, String text, Pageable pageable) {
+        if (!CollectionUtils.isEmpty(ids)) {
+            return wordRepo.findByIdIn(ids, pageable).map(mapper::toResponse);
         }
 
-        return mapper.toListOfVocabularyWordResponses(wordRepo.findAllById(ids));
+        if (StringUtils.hasText(text)) {
+            return wordRepo.findByTextStartingWithIgnoreCase(text, pageable).map(mapper::toResponse);
+        }
+
+        return wordRepo.findAll(pageable).map(mapper::toResponse);
     }
 
     public VocabularyWordResponse getWordById(UUID id) {
