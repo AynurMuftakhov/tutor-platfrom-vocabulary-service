@@ -1,6 +1,12 @@
 package com.mytutorplatform.vocabularyservice.controller;
 
 import com.mytutorplatform.vocabularyservice.model.AudioPart;
+import com.mytutorplatform.vocabularyservice.model.dto.BatchWordsCreateRequest;
+import com.mytutorplatform.vocabularyservice.model.dto.BatchWordsCreateResponse;
+import com.mytutorplatform.vocabularyservice.model.dto.BatchWordsCreateJobResponse;
+import com.mytutorplatform.vocabularyservice.model.dto.BatchWordsCreateJobStatusResponse;
+import com.mytutorplatform.vocabularyservice.model.dto.BatchWordsPreviewRequest;
+import com.mytutorplatform.vocabularyservice.model.dto.BatchWordsPreviewResponse;
 import com.mytutorplatform.vocabularyservice.model.dto.CreateWordRequest;
 import com.mytutorplatform.vocabularyservice.model.dto.VocabularyWordRequest;
 import com.mytutorplatform.vocabularyservice.model.dto.VocabularyWordResponse;
@@ -44,6 +50,26 @@ public class VocabularyController {
         URI location = URI.create(API_V_1 + VOCABULARY_WORDS_PATH + "/" + word.getId());
 
         return ResponseEntity.created(location).body(word);
+    }
+
+    @PostMapping("/batch/preview")
+    public BatchWordsPreviewResponse previewBatch(@RequestBody @Valid BatchWordsPreviewRequest request) {
+        return service.previewWordsBatch(request);
+    }
+
+    @PostMapping("/batch/create")
+    public BatchWordsCreateResponse createBatch(@RequestBody @Valid BatchWordsCreateRequest request) {
+        return service.createWordsBatch(request);
+    }
+
+    @PostMapping("/batch/jobs")
+    public BatchWordsCreateJobResponse createBatchJob(@RequestBody @Valid BatchWordsCreateRequest request) {
+        return service.createWordsBatchAsync(request);
+    }
+
+    @GetMapping("/batch/jobs/{jobId}")
+    public BatchWordsCreateJobStatusResponse getBatchJobStatus(@PathVariable UUID jobId) {
+        return service.getBatchJobStatus(jobId);
     }
 
     @GetMapping
