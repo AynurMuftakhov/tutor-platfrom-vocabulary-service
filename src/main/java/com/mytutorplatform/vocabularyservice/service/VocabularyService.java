@@ -14,11 +14,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -86,16 +88,24 @@ public class VocabularyService {
         }
     }
 
-    public Page<VocabularyWordResponse> getAllWords(List<UUID> ids, String text, Pageable pageable) {
+    public Page<VocabularyWordResponse> getAllWords(List<UUID> ids, String text, String difficulty, Pageable pageable) {
+        Specification<VocabularyWord> spec = Specification.where(null);
+
         if (!CollectionUtils.isEmpty(ids)) {
-            return wordRepo.findByIdIn(ids, pageable).map(mapper::toResponse);
+            spec = spec.and((root, query, cb) -> root.get("id").in(ids));
         }
 
         if (StringUtils.hasText(text)) {
-            return wordRepo.findByTextStartingWithIgnoreCase(text, pageable).map(mapper::toResponse);
+            String normalizedText = text.trim().toLowerCase(Locale.ROOT) + "%";
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("text")), normalizedText));
         }
 
-        return wordRepo.findAll(pageable).map(mapper::toResponse);
+        if (StringUtils.hasText(difficulty)) {
+            String normalizedDifficulty = difficulty.trim();
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("difficulty"), normalizedDifficulty));
+        }
+
+        return wordRepo.findAll(spec, pageable).map(mapper::toResponse);
     }
 
     public VocabularyWordResponse getWordById(UUID id) {

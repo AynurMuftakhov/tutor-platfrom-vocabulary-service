@@ -25,10 +25,15 @@ public class AbstractIntegrationTest {
     protected MockMvc mockMvc;
 
     protected UUID createWord(String text, String translation, String partOfSpeech, UUID teacherId) throws Exception {
+        return createWord(text, translation, partOfSpeech, null, teacherId);
+    }
+
+    protected UUID createWord(String text, String translation, String partOfSpeech, String difficulty, UUID teacherId) throws Exception {
         VocabularyWordRequest request = new VocabularyWordRequest();
         request.setText(text);
         request.setTranslation(translation);
         request.setPartOfSpeech(partOfSpeech);
+        request.setDifficulty(difficulty);
 
         String response = mockMvc.perform(post("/api/v1/vocabulary/words")
                         .contentType(MediaType.APPLICATION_JSON)

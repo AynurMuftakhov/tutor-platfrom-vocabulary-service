@@ -50,8 +50,9 @@ public class VocabularyController {
     public Page<VocabularyWordResponse> getAll(
             @RequestParam(required = false) List<UUID> ids,
             @RequestParam(required = false) String text,
+            @RequestParam(required = false) String difficulty,
             @PageableDefault(size = 20) Pageable pageable) {
-        return service.getAllWords(ids, text, pageable);
+        return service.getAllWords(ids, text, difficulty, pageable);
     }
 
     @GetMapping("/{id}")
